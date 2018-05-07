@@ -1,22 +1,35 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <script src="jquery.js"></script>
+		<script src="jquery.js"></script>
     <script src="data_generator.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+		<link rel="stylesheet" href="bootstrap.min.css">
+		<link rel="stylesheet" href="style.css">
   </head>
   <body>
+
     <script>
 
       $(document).ready(function(){
         var $body = $('body');
         $body.html('');
+        $('<div class="title"><h1>Twittler</h1><h4><em>Make your voice heard</em></h4></div').appendTo($body);
+
+        function appendTweet(index) {
+          var tweet = streams.home[index];
+          var date = renderDate(tweet.created_at);
+          var $tweet = $('<div class="tweet"></div>');
+          var $user  = $('<div class="card-header"></div>').text('@' + tweet.user + ':');
+          var $createdTime = $('<span class="time"></span>').text(date).appendTo($user);
+          $tweet.append($user);
+          var $text = $('<div class="card-body"></div>').text(tweet.message).appendTo($tweet);
+          $tweet.appendTo($body);
+        }
 
         var index = streams.home.length - 1;
         while(index >= 0){
-          var tweet = streams.home[index];
-          var $tweet = $('<div></div>');
-          $tweet.text('@' + tweet.user + ': ' + tweet.message);
-          $tweet.appendTo($body);
+          appendTweet(index);
           index -= 1;
         }
 

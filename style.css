@@ -1,0 +1,37 @@
+body {
+	background-color: #E7E6E1;
+	font-family: 'Lato';
+}
+
+h1 {
+	padding-top: 20px;
+	padding-left: 10%;
+}
+
+h4 {
+	padding-left: 10%;
+}
+
+.tweet {
+	text-align: center;
+	margin: 30px 15%;
+	font-weight: 200%;
+	background-color: #537791;
+	border-radius: 5px;
+}
+
+.card-header {
+	text-align: left;
+	color: #E7E6E1;
+}
+
+.time {
+	float: right;
+}
+
+.card-body {
+	background-color: #C1C0B9;
+	font-size: 150%;
+	text-align: left;
+	padding-left: 10%;
+}

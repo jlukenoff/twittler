@@ -52,7 +52,18 @@ for(var i = 0; i < 10; i++){
 
 var scheduleNextTweet = function(){
   generateRandomTweet();
-  setTimeout(scheduleNextTweet, Math.random() * 1500);
+  var wait = Math.random() * 15000;
+  setTimeout(function() {
+    var tweet = streams.home[streams.home.length - 1];
+    var date = renderDate(tweet.created_at);
+    var $tweet = $('<div class="tweet"></div>');      
+    var $user  = $('<div class="card-header"></div>').text('@' + tweet.user + ':');
+    var $createdTime = $('<span class="time"></span>').text(date).appendTo($user);
+    $tweet.append($user);
+    var $text = $('<div class="card-body"></div>').text(tweet.message).appendTo($tweet);
+    $tweet.insertBefore('.tweet:first');
+    scheduleNextTweet();
+  }, wait);
 };
 scheduleNextTweet();
 
@@ -67,3 +78,22 @@ var writeTweet = function(message){
   tweet.message = message;
   addTweet(tweet);
 };
+
+
+//function for rendering apropriate date string
+var renderDate = function(dateObj) {
+  let months = ['Jan', 'Feb', 'March', 'April', "May", 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec']
+  let isPM = false;
+  let hours = dateObj.getHours();
+  if (hours > 12) {
+    hours = hours - 12;
+    isPM = true; 
+  }
+  let mins = dateObj.getMinutes();
+  let date = dateObj.getDate();
+  let month = months[dateObj.getMonth() - 1];
+  let year = dateObj.getFullYear();
+
+  return hours + ':' + mins + (isPM ? 'pm' : 'am') + ' on ' + month + ' ' + date + ', ' + year; 
+  
+}
