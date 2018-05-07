@@ -54,14 +54,7 @@ var scheduleNextTweet = function(){
   generateRandomTweet();
   var wait = Math.random() * 15000;
   setTimeout(function() {
-    var tweet = streams.home[streams.home.length - 1];
-    var date = renderDate(tweet.created_at);
-    var $tweet = $('<div class="tweet"></div>');      
-    var $user  = $('<div class="card-header"></div>').text('@' + tweet.user + ':');
-    var $createdTime = $('<span class="time"></span>').text(date).appendTo($user);
-    $tweet.append($user);
-    var $text = $('<div class="card-body"></div>').text(tweet.message).appendTo($tweet);
-    $tweet.insertBefore('.tweet:first');
+    appendTweet(streams.home.length - 1);
     scheduleNextTweet();
   }, wait);
 };
@@ -93,7 +86,19 @@ var renderDate = function(dateObj) {
   let date = dateObj.getDate();
   let month = months[dateObj.getMonth() - 1];
   let year = dateObj.getFullYear();
-
+  console.log(dateObj);
   return hours + ':' + (mins < 10 ? '0' + mins : mins) + (isPM ? 'pm' : 'am') + ' on ' + month + ' ' + date + ', ' + year; 
   
+}
+
+//adds tweets to page
+function appendTweet(index) {
+  var tweet = streams.home[index];
+  var date = renderDate(tweet.created_at);
+  var $tweet = $('<div class="tweet"></div>');
+  var $user  = $('<div class="card-header"></div>').text('@' + tweet.user + ':');
+  var $createdTime = $('<span class="time"></span>').text(date).appendTo($user);
+  $tweet.append($user);
+  var $text = $('<div class="card-body"></div>').text(tweet.message).appendTo($tweet);
+  $tweet.insertAfter('.title');
 }
