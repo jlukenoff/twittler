@@ -80,7 +80,7 @@ var writeTweet = function(message){
 };
 
 
-//function for rendering apropriate date string
+//renders appropriate date string
 var renderDate = function(dateObj) {
   let months = ['Jan', 'Feb', 'March', 'April', "May", 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec']
   let isPM = false;
@@ -94,6 +94,6 @@ var renderDate = function(dateObj) {
   let month = months[dateObj.getMonth() - 1];
   let year = dateObj.getFullYear();
 
-  return hours + ':' + mins + (isPM ? 'pm' : 'am') + ' on ' + month + ' ' + date + ', ' + year; 
+  return hours + ':' + (mins < 10 ? '0' + mins : mins) + (isPM ? 'pm' : 'am') + ' on ' + month + ' ' + date + ', ' + year; 
   
 }
