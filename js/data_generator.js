@@ -108,6 +108,7 @@ function appendTweet(index) {
   var $text = $('<div class="card-body"></div>').text(tweet.message).appendTo($tweet);
   $tweet.addClass(tweet.user);
   if (!viewingUser) $tweet.prependTo('#tweets');
+  jQuery('time.timeago').timeago();
 }
 
 //reflects whether in user timeline view
