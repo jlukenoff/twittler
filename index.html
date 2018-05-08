@@ -1,31 +1,54 @@
 <!DOCTYPE html>
 <html>
   <head>
-		<script src="jquery.js"></script>
-    <script src="data_generator.js"></script>
+    <script src="js/jquery.js" type="text/javascript"></script>
+    <script src="js/jquery.timeago.js" type="text/javascript"></script>
+    <script src="js/data_generator.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
-		<link rel="stylesheet" href="bootstrap.min.css">
-		<link rel="stylesheet" href="style.css">
+		<link rel="stylesheet" href="css/bootstrap.min.css">
+		<link rel="stylesheet" href="css/style.css">
   </head>
   <body>
 
     <script>
 
       $(document).ready(function(){
+
         var $body = $('body');
         $body.html('');
-        $('<div class="title"><h1>Twittler</h1><h4><em>Make your voice heard</em></h4></div').appendTo($body);
-
+        var $title = $('<div class="title"><h1><a id="title" href="">Twittler</a></h1><h4><em>Make your voice heard</em></h4></div>')
+        $title.appendTo($body);
+        $('<div class="input-group mb-3"><input id="new_tweet" type="text" class="form-control" placeholder="Submit a tweet..." aria-label="Submit a tweet..."aria-describedby="basic-addon2"><div class="input-group-append"><button id="submit_tweet_btn" class="btn btn-primary" type="button">Submit</button></div></div>').appendTo($title);
+        $('<div id="tweets"></div>').appendTo('body');
+        
         var index = streams.home.length - 1;
         while(index >= 0){
           appendTweet(index);
           index -= 1;
         }
 
-        $('.card-header').on('click', function() {
-          console.log('clicked');
+        $('.username').on('click', function() {
+          let user = $(this).closest('.tweet').attr('class').split(' ')[1];
+          viewingUser = true;
+          
+          $('.tweet').fadeOut();
+          $('.' + user).fadeIn();
+          
         });
 
+        $('#title').on('click', function() {
+          $('.tweet').fadeIn();
+          viewingUser = false;
+        });
+
+        $('#submit_tweet_btn').on('click', function() {
+          let $newTweet = $('#new_tweet').val()
+          writeTweet($newTweet);
+          appendTweet(streams.home.length - 1);
+          $('#new_tweet').val('');
+        });
+
+        jQuery('time.timeago').timeago();
       });
 
     </script>

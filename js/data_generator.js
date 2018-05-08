@@ -16,7 +16,11 @@ window.users = Object.keys(streams.users);
 // utility function for adding tweets to our data structures
 var addTweet = function(newTweet){
   var username = newTweet.user;
-  streams.users[username].push(newTweet);
+  if (streams.users[username] === undefined) {
+    streams.users[username] = [newTweet];
+  } else {
+    streams.users[username].push(newTweet);
+  }
   streams.home.push(newTweet);
 };
 
@@ -69,6 +73,7 @@ var writeTweet = function(message){
   var tweet = {};
   tweet.user = visitor;
   tweet.message = message;
+  tweet.created_at = new Date();
   addTweet(tweet);
 };
 
@@ -84,21 +89,29 @@ var renderDate = function(dateObj) {
   }
   let mins = dateObj.getMinutes();
   let date = dateObj.getDate();
-  let month = months[dateObj.getMonth() - 1];
+  let month = months[dateObj.getMonth()];
   let year = dateObj.getFullYear();
-  console.log(dateObj);
-  return hours + ':' + (mins < 10 ? '0' + mins : mins) + (isPM ? 'pm' : 'am') + ' on ' + month + ' ' + date + ', ' + year; 
+  return month + ' ' + date + ', ' + year; 
+  // hours + ':' + (mins < 10 ? '0' + mins : mins) + (isPM ? 'pm' : 'am') + ' on ' + 
   
 }
 
 //adds tweets to page
 function appendTweet(index) {
   var tweet = streams.home[index];
-  var date = renderDate(tweet.created_at);
-  var $tweet = $('<div class="tweet"></div>');
-  var $user  = $('<div class="card-header"></div>').text('@' + tweet.user + ':');
-  var $createdTime = $('<span class="time"></span>').text(date).appendTo($user);
+  var date = tweet.created_at;
+  var $tweet = $('<div class="tweet"></div>').addClass(tweet.user);
+  var $user  = $('<div class="card-header"></div>');
+  $('<a class="username" href="#"></a>').text('@' + tweet.user + ':').appendTo($user);
+  var $createdTime = $('<time class="timeago" datetime="' + date.toISOString() + '">' + $.timeago(date) + '</time>').appendTo($user);
   $tweet.append($user);
   var $text = $('<div class="card-body"></div>').text(tweet.message).appendTo($tweet);
-  $tweet.insertAfter('.title');
+  $tweet.addClass(tweet.user);
+  if (!viewingUser) $tweet.prependTo('#tweets');
 }
+
+//reflects whether in user timeline view
+var viewingUser = false;
+
+//declare global visitor variable
+var visitor = 'guest' + Math.floor(Math.random() * 200).toString();

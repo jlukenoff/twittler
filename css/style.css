@@ -12,6 +12,18 @@ h4 {
 	padding-left: 10%;
 }
 
+#title, #title:hover {
+	color: inherit;
+}
+
+.input-group {
+	padding: 30px 15%;
+}
+
+.btn, .btn:hover {
+	background-color: #537791;
+}
+
 .tweet {
 	text-align: center;
 	margin: 30px 15%;
@@ -20,12 +32,16 @@ h4 {
 	border-radius: 5px;
 }
 
-.card-header {
+.card-header, .username {
 	text-align: left;
+	color: white;
+}
+
+.username:hover {
 	color: #E7E6E1;
 }
 
-.time {
+.timeago {
 	float: right;
 }
 
