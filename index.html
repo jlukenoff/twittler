@@ -41,11 +41,19 @@
           viewingUser = false;
         });
 
-        $('#submit_tweet_btn').on('click', function() {
+        function submitForm() {
           let $newTweet = $('#new_tweet').val()
           writeTweet($newTweet);
           appendTweet(streams.home.length - 1);
           $('#new_tweet').val('');
+        }
+
+        $('#submit_tweet_btn').on('click', submitForm);
+
+        $('#new_tweet').on('keydown', function(e) {
+          if (e.which === 13) {
+            submitForm();
+          }
         });
 
         jQuery('time.timeago').timeago();
