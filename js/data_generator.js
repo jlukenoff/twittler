@@ -56,11 +56,9 @@ for(var i = 0; i < 10; i++){
 
 var scheduleNextTweet = function(){
   generateRandomTweet();
+  appendTweet(streams.home.length - 1);
   var wait = Math.random() * 15000;
-  setTimeout(function() {
-    appendTweet(streams.home.length - 1);
-    scheduleNextTweet();
-  }, wait);
+  setTimeout(scheduleNextTweet, wait);
 };
 scheduleNextTweet();
 
@@ -76,7 +74,6 @@ var writeTweet = function(message){
   tweet.created_at = new Date();
   addTweet(tweet);
 };
-
 
 //renders appropriate date string
 var renderDate = function(dateObj) {
@@ -96,23 +93,25 @@ var renderDate = function(dateObj) {
   
 }
 
-//adds tweets to page
+//adds tweets to DOM
 function appendTweet(index) {
   var tweet = streams.home[index];
   var date = tweet.created_at;
   var $tweet = $('<div class="tweet"></div>').addClass(tweet.user);
   var $user  = $('<div class="card-header"></div>');
-  $('<a class="username" href="#"></a>').text('@' + tweet.user + ':').appendTo($user);
+  $('<span class="username"></span>').text('@' + tweet.user + ':').appendTo($user);
   var $createdTime = $('<time class="timeago" datetime="' + date.toISOString() + '">' + $.timeago(date) + '</time>').appendTo($user);
   $tweet.append($user);
   var $text = $('<div class="card-body"></div>').text(tweet.message).appendTo($tweet);
   $tweet.addClass(tweet.user);
-  if (!viewingUser) $tweet.prependTo('#tweets');
+  $tweet.prependTo('#tweets');
+  if (viewingUser) $tweet.hide();
+  
   jQuery('time.timeago').timeago();
 }
 
 //reflects whether in user timeline view
 var viewingUser = false;
 
-//declare global visitor variable
-var visitor = 'guest' + Math.floor(Math.random() * 200).toString();
+//declares unique visitor username
+var visitor = 'guest' + Math.floor(Math.random() * 2000).toString();

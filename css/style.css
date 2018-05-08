@@ -16,6 +16,11 @@ h4 {
 	color: inherit;
 }
 
+#title:hover {
+	cursor: pointer;
+	text-decoration: underline;
+}
+
 .input-group {
 	padding: 30px 15%;
 }
@@ -38,6 +43,8 @@ h4 {
 }
 
 .username:hover {
+	cursor: pointer;
+	text-decoration: underline;
 	color: #E7E6E1;
 }
 

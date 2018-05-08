@@ -16,7 +16,7 @@
 
         var $body = $('body');
         $body.html('');
-        var $title = $('<div class="title"><h1><a id="title" href="">Twittler</a></h1><h4><em>Make your voice heard</em></h4></div>')
+        var $title = $('<div class="title"><h1 id="title">Twittler</h1><h4><em>Make your voice heard</em></h4></div>')
         $title.appendTo($body);
         $('<div class="input-group mb-3"><input id="new_tweet" type="text" class="form-control" placeholder="Submit a tweet..." aria-label="Submit a tweet..."aria-describedby="basic-addon2"><div class="input-group-append"><button id="submit_tweet_btn" class="btn btn-primary" type="button">Submit</button></div></div>').appendTo($title);
         $('<div id="tweets"></div>').appendTo('body');
@@ -27,17 +27,17 @@
           index -= 1;
         }
 
-        $('.username').on('click', function() {
+        $('#tweets').on('click', '.username', function() {
           let user = $(this).closest('.tweet').attr('class').split(' ')[1];
           viewingUser = true;
           
-          $('.tweet').fadeOut();
-          $('.' + user).fadeIn();
+          $('.tweet').fadeOut(700);
+          $('.' + user).fadeIn(700);
           
         });
 
         $('#title').on('click', function() {
-          $('.tweet').fadeIn();
+          $('.tweet').fadeIn(700);
           viewingUser = false;
         });
 
