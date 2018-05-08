@@ -18,7 +18,7 @@
         $body.html('');
         var $title = $('<div class="title"><h1 id="title">Twittler</h1><h4><em>Make your voice heard</em></h4></div>')
         $title.appendTo($body);
-        $('<div class="input-group mb-3"><input id="new_tweet" type="text" class="form-control" placeholder="Submit a tweet..." aria-label="Submit a tweet..."aria-describedby="basic-addon2"><div class="input-group-append"><button id="submit_tweet_btn" class="btn btn-primary" type="button">Submit</button></div></div>').appendTo($title);
+        $('<div class="input-group mb-3"><input id="new_tweet" type="text" class="form-control" placeholder="Submit a tweet..."><div class="input-group-append"><button id="submit_tweet_btn" class="btn btn-primary" type="button">Submit</button></div></div>').appendTo($title);
         $('<div id="tweets"></div>').appendTo('body');
         
         var index = streams.home.length - 1;
