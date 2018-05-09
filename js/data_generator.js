@@ -57,7 +57,7 @@ for(var i = 0; i < 10; i++){
 var scheduleNextTweet = function(){
   generateRandomTweet();
   appendTweet(streams.home.length - 1);
-  var wait = Math.random() * 15000;
+  var wait = Math.random() * 1500;
   setTimeout(scheduleNextTweet, wait);
 };
 scheduleNextTweet();
@@ -107,7 +107,7 @@ function appendTweet(index) {
   $tweet.prependTo('#tweets');
   if (viewingUser) $tweet.hide();
   
-  jQuery('time.timeago').timeago();
+  $('time.timeago').timeago();
 }
 
 //reflects whether in user timeline view
