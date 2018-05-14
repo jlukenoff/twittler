@@ -56,14 +56,14 @@ for(var i = 0; i < 10; i++){
 
 var scheduleNextTweet = function(){
   generateRandomTweet();
-  appendTweet(streams.home.length - 1);
-  var wait = Math.random() * 1500;
-  setTimeout(scheduleNextTweet, wait);
+  setTimeout(scheduleNextTweet, Math.random() * 1500);
 };
 scheduleNextTweet();
 
 // utility function for letting students add "write a tweet" functionality
 // (note: not used by the rest of this file.)
+//declares unique visitor username
+const visitor = 'guest' + Math.floor(Math.random() * 2000).toString();
 var writeTweet = function(message){
   if(!visitor){
     throw new Error('set the global visitor property!');
@@ -74,44 +74,3 @@ var writeTweet = function(message){
   tweet.created_at = new Date();
   addTweet(tweet);
 };
-
-//renders appropriate date string
-var renderDate = function(dateObj) {
-  let months = ['Jan', 'Feb', 'March', 'April', "May", 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec']
-  let isPM = false;
-  let hours = dateObj.getHours();
-  if (hours > 12) {
-    hours = hours - 12;
-    isPM = true; 
-  }
-  let mins = dateObj.getMinutes();
-  let date = dateObj.getDate();
-  let month = months[dateObj.getMonth()];
-  let year = dateObj.getFullYear();
-  return month + ' ' + date + ', ' + year; 
-  // hours + ':' + (mins < 10 ? '0' + mins : mins) + (isPM ? 'pm' : 'am') + ' on ' + 
-  
-}
-
-//adds tweets to DOM
-function appendTweet(index) {
-  var tweet = streams.home[index];
-  var date = tweet.created_at;
-  var $tweet = $('<div class="tweet"></div>').addClass(tweet.user);
-  var $user  = $('<div class="card-header"></div>');
-  $('<span class="username"></span>').text('@' + tweet.user + ':').appendTo($user);
-  var $createdTime = $('<time class="timeago" datetime="' + date.toISOString() + '">' + $.timeago(date) + '</time>').appendTo($user);
-  $tweet.append($user);
-  var $text = $('<div class="card-body"></div>').text(tweet.message).appendTo($tweet);
-  $tweet.addClass(tweet.user);
-  $tweet.prependTo('#tweets');
-  if (viewingUser) $tweet.hide();
-  
-  $('time.timeago').timeago();
-}
-
-//reflects whether in user timeline view
-var viewingUser = false;
-
-//declares unique visitor username
-var visitor = 'guest' + Math.floor(Math.random() * 2000).toString();

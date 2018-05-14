@@ -1,11 +1,13 @@
 body {
 	background-color: #E7E6E1;
-	font-family: 'Lato';
+	font-family: 'Lato', sans-serif;
 }
 
 h1 {
-	padding-top: 20px;
-	padding-left: 10%;
+	margin-top: 40px;
+	margin-left: 10%;
+	font-family: 'Lobster', cursive;
+	font-size: 60px;
 }
 
 h4 {

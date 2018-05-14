@@ -4,7 +4,7 @@
     <script src="js/jquery.js" type="text/javascript"></script>
     <script src="js/jquery.timeago.js" type="text/javascript"></script>
     <script src="js/data_generator.js"></script>
-    <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lato|Lobster" rel="stylesheet">
 		<link rel="stylesheet" href="css/bootstrap.min.css">
 		<link rel="stylesheet" href="css/style.css">
   </head>
@@ -13,27 +13,61 @@
     <script>
 
       $(document).ready(function(){
-
-        var $body = $('body');
+        //reflects whether in user timeline view
+        let viewingUser = false;
+        
+        //initial html and title set up
+        let $body = $('body');
         $body.html('');
-        var $title = $('<div class="title"><h1 id="title">Twittler</h1><h4><em>Make your voice heard</em></h4></div>')
+        let $title = $('<div class="title"><h1 id="title">Twittler</h1><h4><em>Make your voice heard</em></h4></div>')
         $title.appendTo($body);
         $('<div class="input-group mb-3"><input id="new_tweet" type="text" class="form-control" placeholder="Submit a tweet..."><div class="input-group-append"><button id="submit_tweet_btn" class="btn btn-primary" type="button">Submit</button></div></div>').appendTo($title);
         $('<div id="tweets"></div>').appendTo('body');
-        
-        var index = streams.home.length - 1;
-        while(index >= 0){
-          appendTweet(index);
-          index -= 1;
+
+        //----Helper Functions---//
+        function appendTweetsToDOM(index) {
+          let tweet = streams.home[index];
+          let date = tweet.created_at;
+          let $tweet = $('<div class="tweet"></div>').addClass(tweet.user);
+          let $user = $('<div class="card-header"></div>');
+          $('<span class="username"></span>').text('@' + tweet.user + ':').appendTo($user);
+          let $createdTime = $('<time class="timeago" datetime="' + date.toISOString() + '">' + $.timeago(date) + '</time>').appendTo($user);
+          $tweet.append($user);
+          let $text = $('<div class="card-body"></div>').text(tweet.message).appendTo($tweet);
+          $tweet.addClass(tweet.user);
+          $tweet.hide();
+          $tweet.prependTo('#tweets');
+          if (!viewingUser) $tweet.slideDown();
+
+          $('time.timeago').timeago();
         }
 
+        function showNewTweets() {
+          while (index < streams.home.length) {
+            appendTweetsToDOM(index);
+            index++
+          }
+        }
+
+        function submitForm() {
+          let $newTweet = $('#new_tweet').val()
+          writeTweet($newTweet);
+          appendTweetsToDOM(streams.home.length - 1);
+          $('#new_tweet').val('');
+        }
+        
+        //--Auto-refresh tweets---//
+        let index = 0;
+        showNewTweets();
+        setInterval(showNewTweets, 7000);
+
+        //--Event Handlers--//
         $('#tweets').on('click', '.username', function() {
           let user = $(this).closest('.tweet').attr('class').split(' ')[1];
           viewingUser = true;
           
           $('.tweet').fadeOut(700);
           $('.' + user).fadeIn(700);
-          
         });
 
         $('#title').on('click', function() {
@@ -49,21 +83,15 @@
           $(this).parent().animate({padding: '30px 65% 30px 15%'});
         });
 
-        function submitForm() {
-          let $newTweet = $('#new_tweet').val()
-          writeTweet($newTweet);
-          appendTweet(streams.home.length - 1);
-          $('#new_tweet').val('');
-        }
-
         $('#submit_tweet_btn').on('click', submitForm);
 
-        $('#new_tweet').on('keydown', function(e) {
-          if (e.which === 13) {
+        $('#new_tweet').on('keydown', function(event) {
+          if (event.which === 13) {
             submitForm();
           }
         });
-
+        
+        //--Time-ago Auto-Refresh---//
         $('time.timeago').timeago();
       });
 
